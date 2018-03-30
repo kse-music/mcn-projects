@@ -1,0 +1,1 @@
+MCN is a tool for quickly building JavaWeb systems based on SpringBoot and SpringCloud. MCN provides more default configurations and auto config on the basis of SpringBoot, such as multi-data source configuration, cross-domain, global exception handler etc.Support Servlet and Reactive and non-Web development mode at the same time.

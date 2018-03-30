@@ -9,19 +9,18 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConditionalOnClass(JWT.class)
-@EnableConfigurationProperties({JwtProperties.class})
+@EnableConfigurationProperties
 public class JwtTokenAutoConfiguration {
-
-    private JwtProperties jwtProperties;
-
-    public JwtTokenAutoConfiguration(JwtProperties jwtProperties) {
-        this.jwtProperties = jwtProperties;
-    }
 
     @Bean
     @ConditionalOnMissingBean(name={"jwtToken"})
     public JwtToken jwtToken() {
-        return new JwtToken(jwtProperties);
+        return new JwtToken(jwtProperties());
     }
 
+    @Bean
+    @ConditionalOnMissingBean
+    public JwtProperties jwtProperties(){
+        return new JwtProperties();
+    }
 }

@@ -5,39 +5,63 @@
     <groupId>com.hiekn.boot</groupId>
     <artifactId>mcn-projects</artifactId>
     <packaging>pom</packaging>
-    <version>1.0</version>
+    <version>1.5.18</version>
     <modules>
+        <module>mcn-core</module>
         <module>mcn-spring-boot-starter</module>
         <module>mcn-spring-boot-autoconfigure</module>
+        <module>mcn-swagger2-ui</module>
+        <module>mcn-maven-plugin</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.18.RELEASE</version>
+        <relativePath/>
+    </parent>
+
     <properties>
+        <mcn.version>1.5.18</mcn.version>
         <project.build.sourceEncoding>UTF8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <spring-boot.version>1.5.10.RELEASE</spring-boot.version>
-        <jersey-swagger.version>1.5.17</jersey-swagger.version>
-        <elasticsearch.version>5.5.3</elasticsearch.version>
+        <spring-cloud.version>Edgware.RELEASE</spring-cloud.version>
+        <jersey-swagger.version>1.5.19</jersey-swagger.version>
+        <mybatis-generator.version>1.3.6</mybatis-generator.version>
+        <es.version>5.5.3</es.version>
         <mybatis-spring-boot.version>1.3.2</mybatis-spring-boot.version>
         <guava.version>23.0</guava.version>
         <jwt.version>3.1.0</jwt.version>
+        <commons-lang.version>3.7</commons-lang.version>
+        <commons-io.version>2.6</commons-io.version>
+        <fastjson.version>1.2.47</fastjson.version>
+        <boot-admin.version>1.5.7</boot-admin.version>
+        <qiniu.version>7.2.11</qiniu.version>
+        <licence.version>1.0.4</licence.version>
+        <jsoup.version>1.11.3</jsoup.version>
     </properties>
 
     <dependencyManagement>
 
         <dependencies>
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.7</version>
+                <version>${commons-lang.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -50,30 +74,56 @@
                 <version>${mybatis-spring-boot.version}</version>
             </dependency>
             <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-client</artifactId>
+                <version>${boot-admin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-server</artifactId>
+                <version>${boot-admin.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-jersey2-jaxrs</artifactId>
                 <version>${jersey-swagger.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.elasticsearch.client</groupId>
                 <artifactId>transport</artifactId>
-                <version>${elasticsearch.version}</version>
+                <version>${es.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>rest</artifactId>
+                <version>${es.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.elasticsearch</groupId>
                 <artifactId>elasticsearch</artifactId>
-                <version>${elasticsearch.version}</version>
+                <version>${es.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.hiekn.boot</groupId>
-                <artifactId>jersey2-swagger-spring-boot-starter</artifactId>
-                <version>${jersey-swagger-boot.version}</version>
+                <artifactId>mcn-spring-boot-starter</artifactId>
+                <version>${mcn.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.hiekn.boot</groupId>
-                <artifactId>jersey2-swagger-spring-boot-autoconfigure</artifactId>
-                <version>${jersey-swagger-boot.version}</version>
+                <artifactId>mcn-core</artifactId>
+                <version>${mcn.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.hiekn.boot</groupId>
+                <artifactId>mcn-spring-boot-autoconfigure</artifactId>
+                <version>${mcn.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.hiekn.boot</groupId>
+                <artifactId>mcn-swagger2-ui</artifactId>
+                <version>${mcn.version}</version>
             </dependency>
 
             <dependency>
@@ -85,18 +135,31 @@
             <dependency>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-core</artifactId>
-                <version>1.3.6</version>
+                <version>${mybatis-generator.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.elasticsearch.client</groupId>
-                <artifactId>transport</artifactId>
-                <version>${elasticsearch.version}</version>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
             </dependency>
+
             <dependency>
-                <groupId>org.elasticsearch</groupId>
-                <artifactId>elasticsearch</artifactId>
-                <version>${elasticsearch.version}</version>
+                <groupId>com.qiniu</groupId>
+                <artifactId>qiniu-java-sdk</artifactId>
+                <version>${qiniu.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.hiekn</groupId>
+                <artifactId>licence</artifactId>
+                <version>${licence.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>${jsoup.version}</version>
             </dependency>
 
         </dependencies>
@@ -104,43 +167,51 @@
     </dependencyManagement>
 
     <build>
+
         <pluginManagement>
             <plugins>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.1</version>
+                    <version>3.2</version>
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
                     </configuration>
                 </plugin>
                 <plugin>
+                    <groupId>com.hiekn.generator</groupId>
+                    <artifactId>mcn-maven-plugin</artifactId>
+                    <version>${mcn.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>mysql</groupId>
+                            <artifactId>mysql-connector-java</artifactId>
+                            <version>${mysql.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>com.hiekn.boot</groupId>
+                            <artifactId>mcn-spring-boot-starter</artifactId>
+                            <version>${mcn.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.5</version>
-                    <configuration>
-                        <skipTests>true</skipTests>
-                    </configuration>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.4</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
+
     </build>
-
-
-    <distributionManagement>
-        <repository>
-            <id>user-release</id>
-            <name>User Project Release</name>
-            <url>http://hiekn.hiekn.com:19162/nexus/content/repositories/releases/</url>
-        </repository>
-
-        <snapshotRepository>
-            <id>user-snapshots</id>
-            <name>User Project SNAPSHOTS</name>
-            <url>http://hiekn.hiekn.com:19162/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
-
 
 </project>

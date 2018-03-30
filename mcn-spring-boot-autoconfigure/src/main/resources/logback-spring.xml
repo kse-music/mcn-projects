@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="false">
+
+    <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+    <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} %L - %msg%n" />
+
+    <springProperty name="fileFilter" source="mcn.log.filter"/>
+    <!--<springProperty name="profile" source="spring.profiles.active"/>-->
+    <springProperty name="errorFileName" source="mcn.log.errorFileName"/>
+    <!--<springProperty name="infoFileName" source="mcn.log.infoFileName"/>-->
+    <springProperty name="maxHistory" source="mcn.log.maxHistory"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${fileFilter}</level>
+        </filter>
+        <!--当天生成的日志文件名称-->
+        <file>${LOG_PATH}${errorFileName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名-->
+            <FileNamePattern>${LOG_PATH}${errorFileName}-%d{yyyy-MM-dd}.log.gz</FileNamePattern>
+            <!--归档日志文件保留天数-->
+            <MaxHistory>${maxHistory}</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!--<appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>info</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${LOG_PATH}${infoFileName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_PATH}${infoFileName}}-%d{yyyy-MM-dd}.log.gz</FileNamePattern>
+            <MaxHistory>${maxHistory}</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>-->
+
+    <root>
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE_ERROR" />
+        <!--<appender-ref ref="FILE_INFO" />-->
+    </root>
+
+</configuration>

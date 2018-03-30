@@ -10,12 +10,13 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StringUtils;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 @Configuration
-@ConditionalOnClass({Client.class})
+@ConditionalOnClass({Client.class,PreBuiltTransportClient.class})
 @ConditionalOnMissingBean(type = {"org.elasticsearch.client.transport.TransportClient"})
 @EnableConfigurationProperties({ElasticsearchProperties.class})
 public class ElasticsearchAutoConfiguration {
@@ -32,7 +33,7 @@ public class ElasticsearchAutoConfiguration {
         TransportClient transportClient = new PreBuiltTransportClient(settings);
         try {
             for (String host : elasticsearchProperties.getHost()) {
-                String[] ipPort = host.split(":");
+                String[] ipPort = StringUtils.tokenizeToStringArray(host,":");
                 transportClient.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(ipPort[0]), Integer.valueOf(ipPort[1])));
             }
         } catch (UnknownHostException e) {

@@ -1,3 +1,18 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.hiekn.boot.autoconfigure.jersey.JerseySwaggerAutoConfiguration,\
+org.springframework.context.ApplicationContextInitializer=\
+  com.hiekn.boot.autoconfigure.context.McnContextInitializer
+
+org.springframework.context.ApplicationListener=\
+  com.hiekn.boot.autoconfigure.context.McnApplicationListener
+
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.hiekn.boot.autoconfigure.db.SingleDatasourceAutoConfiguration,\
+  com.hiekn.boot.autoconfigure.db.MultipleMybatisAutoConfiguration,\
+  com.hiekn.boot.autoconfigure.jersey.JerseySwaggerAutoConfiguration,\
+  com.hiekn.boot.autoconfigure.jersey.FilterAutoConfiguration,\
   com.hiekn.boot.autoconfigure.jwt.JwtTokenAutoConfiguration,\
-  com.hiekn.boot.autoconfigure.elasticsearch.ElasticsearchAutoConfiguration
+  com.hiekn.boot.autoconfigure.elasticsearch.ElasticsearchAutoConfiguration,\
+  com.hiekn.boot.autoconfigure.qiniu.QiNiuAutoConfiguration,\
+  com.hiekn.boot.autoconfigure.jwt.WebSecurityAutoConfiguration
+
+org.springframework.boot.env.EnvironmentPostProcessor=\
+  com.hiekn.boot.autoconfigure.context.McnPropertiesPostProcessor
