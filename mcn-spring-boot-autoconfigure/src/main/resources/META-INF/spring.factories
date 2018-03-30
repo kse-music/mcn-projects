@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.hiekn.boot.autoconfigure.jersey.JerseySwaggerAutoConfiguration,\
+  com.hiekn.boot.autoconfigure.jwt.JwtTokenAutoConfiguration,\
+  com.hiekn.boot.autoconfigure.elasticsearch.ElasticsearchAutoConfiguration
