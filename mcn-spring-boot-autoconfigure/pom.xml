@@ -16,10 +16,6 @@
             <groupId>com.hiekn.boot</groupId>
             <artifactId>mcn-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
 
         <!-- Optional -->
         <dependency>
