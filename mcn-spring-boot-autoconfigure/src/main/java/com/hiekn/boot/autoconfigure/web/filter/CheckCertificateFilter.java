@@ -1,19 +1,26 @@
 package com.hiekn.boot.autoconfigure.web.filter;
 
-import com.google.common.collect.Lists;
 import com.hiekn.boot.autoconfigure.base.exception.ErrorMsg;
 import com.hiekn.boot.autoconfigure.base.util.JsonUtils;
 import com.hiekn.licence.verify.VerifyLicense;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public class CheckCertificateFilter implements Filter {
 
     private static volatile VerifyLicense vLicense;
+
+    private Environment environment;
+
+    public CheckCertificateFilter(Environment environment) {
+        this.environment = environment;
+    }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -47,7 +54,8 @@ public class CheckCertificateFilter implements Filter {
         if(url.contains("Swagger")){
             return true;
         }
-        for (String s : Lists.newArrayList("h/lic","swagger.json")) {
+        List<String> whiteUrl = environment.getProperty("lic.white", List.class);
+        for (String s : whiteUrl) {
             if(url.endsWith(s)){
                 return true;
             }
