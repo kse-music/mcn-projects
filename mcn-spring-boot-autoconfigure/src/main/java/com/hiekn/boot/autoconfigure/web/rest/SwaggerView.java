@@ -1,18 +1,22 @@
 package com.hiekn.boot.autoconfigure.web.rest;
 
+import com.hiekn.boot.autoconfigure.base.model.result.RestResp;
 import com.hiekn.boot.autoconfigure.base.util.McnUtils;
 import com.hiekn.boot.autoconfigure.jersey.JerseySwaggerProperties;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.glassfish.jersey.server.mvc.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Singleton;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
 
 @Singleton
 @Path("/")
@@ -34,5 +38,21 @@ public class SwaggerView {
         map.put("cdn", Objects.nonNull(cdn) ? cdn : "/Swagger/");
         return map;
     }
+
+    @POST
+    @Path("/h/lic")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResp upload(@FormDataParam("file") InputStream fileIn,
+                           @FormDataParam("file") FormDataContentDisposition fileInfo) {
+        Properties prop = McnUtils.loadProperties("lic-verify.properties","kgLicence");
+        File f = new File(prop.getProperty("licPath"));
+        if(f.exists()){
+            f.delete();
+        }
+        McnUtils.copyFile(fileIn,prop.getProperty("licPath"));
+        return new RestResp<>();
+    }
+
 
 }
