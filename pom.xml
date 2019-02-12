@@ -39,7 +39,7 @@
         <fastjson.version>1.2.47</fastjson.version>
         <boot-admin.version>1.5.7</boot-admin.version>
         <qiniu.version>7.2.11</qiniu.version>
-        <licence.version>1.0.2</licence.version>
+        <licence.version>1.0.4</licence.version>
         <jsoup.version>1.11.3</jsoup.version>
     </properties>
 
