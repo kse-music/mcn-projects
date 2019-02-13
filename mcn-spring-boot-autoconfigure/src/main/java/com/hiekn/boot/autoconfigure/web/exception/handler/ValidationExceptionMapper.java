@@ -1,6 +1,5 @@
 package com.hiekn.boot.autoconfigure.web.exception.handler;
 
-import com.google.common.collect.Lists;
 import com.hiekn.boot.autoconfigure.base.model.ValidationErrorBean;
 import com.hiekn.boot.autoconfigure.base.model.result.RestResp;
 import org.glassfish.jersey.server.ServerProperties;
@@ -15,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
+import java.util.ArrayList;
 import java.util.List;
 
 @Provider
@@ -36,7 +36,7 @@ public final class ValidationExceptionMapper extends AbstractExceptionHandler im
             if (property != null && Boolean.valueOf(property.toString())) {
                 response.type(MediaType.APPLICATION_JSON_TYPE);
                 List<ValidationError> errors = ValidationHelper.constraintViolationToValidationErrors(cve);
-                List<ValidationErrorBean> list = Lists.newArrayList();
+                List<ValidationErrorBean> list = new ArrayList();
                 for (ValidationError error : errors) {
                     ValidationErrorBean validationErrorBean = new ValidationErrorBean();
                     validationErrorBean.setMessage(error.getMessage());

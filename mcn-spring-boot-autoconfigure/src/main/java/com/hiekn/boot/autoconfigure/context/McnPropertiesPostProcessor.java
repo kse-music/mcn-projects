@@ -1,6 +1,5 @@
 package com.hiekn.boot.autoconfigure.context;
 
-import com.google.common.collect.Maps;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.config.ConfigFileApplicationListener;
 import org.springframework.boot.env.EnvironmentPostProcessor;
@@ -14,6 +13,7 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -25,7 +25,7 @@ public class McnPropertiesPostProcessor implements EnvironmentPostProcessor,Orde
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         MutablePropertySources propertySources = environment.getPropertySources();
         //add map config
-        Map<String, Object> mapProp = Maps.newHashMap();
+        Map<String, Object> mapProp = new HashMap<>();
         Class<?> mainApplicationClass = application.getMainApplicationClass();//maybe is null
         if(Objects.nonNull(mainApplicationClass)){
             mapProp.put(APP_BASE_PACKAGE_PROPERTY,ClassUtils.getPackageName(mainApplicationClass));

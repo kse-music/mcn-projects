@@ -1,6 +1,5 @@
 package com.hiekn.boot.autoconfigure.jersey;
 
-import com.google.common.collect.Sets;
 import com.hiekn.boot.autoconfigure.web.filter.JerseyXssFilter;
 import com.hiekn.boot.autoconfigure.web.rest.SwaggerView;
 import io.swagger.jaxrs.config.BeanConfig;
@@ -28,8 +27,7 @@ import org.springframework.util.StringUtils;
 import javax.ws.rs.Path;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -58,13 +56,11 @@ public class JerseySwaggerAutoConfiguration extends ResourceConfig {
             scanner.addIncludeFilter(new AnnotationTypeFilter(Path.class));
             scanner.addIncludeFilter(new AnnotationTypeFilter(Provider.class));
             String otherResourcePackage = jersey.getOtherResourcePackage();
-            Set<String> packages = Sets.newHashSet(jersey.getBasePackage(),EXCEPTION_HANDLER_PACKAGE);
+            Set<String> packages = new HashSet<>(Arrays.asList(jersey.getBasePackage(),EXCEPTION_HANDLER_PACKAGE));
             if (StringUtils.hasLength(otherResourcePackage)) {
-                for (String className : StringUtils.tokenizeToStringArray(otherResourcePackage, ",")) {
-                    packages.add(className);
-                }
+                packages.addAll(Arrays.asList(StringUtils.tokenizeToStringArray(otherResourcePackage, ",")));
             }
-            Set<Class<?>> allClasses = Sets.newHashSet();//maybe need register JacksonJsonProvider.class
+            Set<Class<?>> allClasses = new HashSet<>();//maybe need register JacksonJsonProvider.class
             for (String pkg : packages) {
                 Set<Class<?>> collect = scanner.findCandidateComponents(pkg).stream()
                         .map(beanDefinition -> ClassUtils.resolveClassName(beanDefinition.getBeanClassName(), this.getClassLoader()))

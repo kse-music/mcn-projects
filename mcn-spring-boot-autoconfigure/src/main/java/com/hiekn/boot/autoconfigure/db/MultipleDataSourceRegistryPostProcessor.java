@@ -1,6 +1,5 @@
 package com.hiekn.boot.autoconfigure.db;
 
-import com.google.common.collect.Maps;
 import com.hiekn.boot.autoconfigure.context.McnPropertiesPostProcessor;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
@@ -20,6 +19,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
 import java.beans.PropertyDescriptor;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -55,7 +55,7 @@ public class MultipleDataSourceRegistryPostProcessor implements BeanDefinitionRe
 
                     RootBeanDefinition rootBeanDefinition = new RootBeanDefinition(SqlSessionFactoryBean.class);
                     rootBeanDefinition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
-                    Map<String, Object> map = Maps.newHashMap();
+                    Map<String, Object> map = new HashMap<>();
                     map.put("vfs", SpringBootVFS.class);
                     map.put("dataSource", new RuntimeBeanReference(sb.toString()));
 
@@ -91,7 +91,7 @@ public class MultipleDataSourceRegistryPostProcessor implements BeanDefinitionRe
 
     private void configConnectPool(GenericBeanDefinition beanDefinition, String db) {
         String propertyPrefixKey = new StringBuilder(MultipleMybatisAutoConfiguration.PREFIX).append(db).append(".").toString();
-        Map<String, Object> map = Maps.newHashMap();
+        Map<String, Object> map = new HashMap<>();
         PropertyDescriptor[] descriptors = BeanUtils.getPropertyDescriptors(org.apache.tomcat.jdbc.pool.DataSource.class);
         for (PropertyDescriptor descriptor : descriptors) {
             String name = descriptor.getName();

@@ -1,8 +1,9 @@
 package com.hiekn.boot.autoconfigure.jersey;
 
-import com.google.common.collect.Lists;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
 @ConfigurationProperties("mcn.filter")
 public class FilterProperties {
 
-    private List<String> excludes = Lists.newArrayList("/favicon.ico,/img/*,/js/*,/css/*");
+    private List<String> excludes = new ArrayList(Arrays.asList("/favicon.ico,/img/*,/js/*,/css/*"));
     /**
      * 是否过滤富文本内容
      */

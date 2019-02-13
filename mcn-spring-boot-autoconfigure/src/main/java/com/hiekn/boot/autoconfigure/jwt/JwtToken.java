@@ -6,7 +6,6 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -15,10 +14,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class JwtToken {
 
@@ -37,7 +33,7 @@ public class JwtToken {
     }
 
     public String createToken(Object identifier) {
-        Map<String,Object> data = Maps.newHashMap();
+        Map<String,Object> data = new HashMap<>();
         data.put("userId",identifier);
         return createToken(data);
     }
@@ -52,7 +48,7 @@ public class JwtToken {
         nowTime.add(Calendar.SECOND, jwtProperties.getExpireDate());
         Date expireDate = nowTime.getTime();
 
-        Map<String,Object> map = Maps.newHashMap();
+        Map<String,Object> map = new HashMap<>();
         map.put("alg","HS256");
         map.put("typ","JWT");
 
@@ -88,7 +84,7 @@ public class JwtToken {
         Date issuedAt = jwt.getIssuedAt();
         if(System.currentTimeMillis() - issuedAt.getTime() > jwtProperties.getRefreshInterval()*jwtProperties.getUnit()){
             Map<String, Claim> claims = jwt.getClaims();
-            Map<String,Object> data = Maps.newHashMap();
+            Map<String,Object> data = new HashMap<>();
             claims.forEach((k,v) -> {
                 if(!"iat".equals(k) && !"exp".equals(k) && !"iss".equals(k)){
                     data.put(k,v.as(Object.class));
