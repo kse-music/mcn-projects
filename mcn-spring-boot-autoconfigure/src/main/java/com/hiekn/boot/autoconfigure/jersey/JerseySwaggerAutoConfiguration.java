@@ -107,7 +107,14 @@ public class JerseySwaggerAutoConfiguration extends ResourceConfig {
     private void initSwagger(ResourceConfig config){
         if(jersey.getInit() && ClassUtils.isPresent("io.swagger.jaxrs.listing.ApiListingResource",null)){
             config.registerClasses(ApiListingResource.class, SwaggerSerializers.class);
-            BeanConfig beanConfig = new BeanConfig();
+            BeanConfig beanConfig = new BeanConfig(){
+                @Override
+                public Set<Class<?>> classes() {
+                    Set<Class<?>> classes = super.classes();
+                    classes.add(SwaggerReaderListener.class);
+                    return classes;
+                }
+            };
             beanConfig.setVersion(jersey.getVersion());
             beanConfig.setTitle(jersey.getTitle());
             if(Objects.nonNull(jersey.getHost())){

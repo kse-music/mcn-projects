@@ -104,7 +104,7 @@ public class GenerateBaseServiceAndImplementPlugin extends PluginAdapter {
                 restClass.getAnnotations().add("@Path(\""+path+"\")");
                 restClass.getAnnotations().add("@Produces(MediaType.APPLICATION_JSON)");
                 restClass.getAnnotations().add("@Api(\""+shortName.replace("Mapper", "RestApi")+"\")");
-                restClass.getAnnotations().add("@ApiImplicitParams({@ApiImplicitParam(paramType = \"header\", dataType = \"string\", name = \"Authorization\",required = true)})\n");
+//                restClass.getAnnotations().add("@ApiImplicitParams({@ApiImplicitParam(paramType = \"header\", dataType = \"string\", name = \"Authorization\",required = true)})");
                 String xService = Introspector.decapitalize(shortName.replace("Mapper", "Service"));
                 Field field = new Field(xService, new FullyQualifiedJavaType(serviceInterfaceFullName));
                 field.getAnnotations().add("@Autowired");
