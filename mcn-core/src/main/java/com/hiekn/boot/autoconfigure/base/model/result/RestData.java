@@ -9,7 +9,6 @@ import java.util.List;
  *
  * please RestResp count attr as rsCount
  */
-@Deprecated
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RestData<T> {
 
