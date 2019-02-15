@@ -30,7 +30,7 @@ public class SwaggerReaderListener implements ReaderListener {
         HeaderParameter headerParameter = new HeaderParameter();
         headerParameter.setName("Authorization");
         headerParameter.setType("string");
-//        headerParameter.setRequired(true);
+        headerParameter.setRequired(true);
         Map<String, Path> paths = swagger.getPaths();
         if(paths != null){
             paths.forEach((k,v) -> {
