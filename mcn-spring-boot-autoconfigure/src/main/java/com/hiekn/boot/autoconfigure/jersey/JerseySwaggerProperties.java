@@ -10,6 +10,7 @@ public class JerseySwaggerProperties {
     private String basePackage;
     private Boolean init = true;
     private Boolean xss = false;
+    private Boolean authHeader = false;
     private String version;
     private String title = "API";
     private String host;
@@ -50,6 +51,14 @@ public class JerseySwaggerProperties {
 
     public void setXss(Boolean xss) {
         this.xss = xss;
+    }
+
+    public Boolean getAuthHeader() {
+        return authHeader;
+    }
+
+    public void setAuthHeader(Boolean authHeader) {
+        this.authHeader = authHeader;
     }
 
     public String getVersion() {

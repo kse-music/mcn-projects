@@ -5,6 +5,7 @@ import com.hiekn.boot.autoconfigure.web.rest.SwaggerView;
 import io.swagger.jaxrs.config.BeanConfig;
 import io.swagger.jaxrs.listing.ApiListingResource;
 import io.swagger.jaxrs.listing.SwaggerSerializers;
+import io.swagger.util.ReflectionUtils;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
@@ -27,7 +28,11 @@ import org.springframework.util.StringUtils;
 import javax.ws.rs.Path;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-import java.util.*;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -111,7 +116,33 @@ public class JerseySwaggerAutoConfiguration extends ResourceConfig {
                 @Override
                 public Set<Class<?>> classes() {
                     Set<Class<?>> classes = super.classes();
-                    classes.add(SwaggerReaderListener.class);
+                    if(jersey.getAuthHeader()){
+                        for (Class<?> cls : classes) {
+                            javax.ws.rs.Path apiPath = ReflectionUtils.getAnnotation(cls, javax.ws.rs.Path.class);
+                            if(apiPath != null){
+                                boolean clsHasIgnoreAuth = ReflectionUtils.getAnnotation(cls, IgnoreAuth.class) != null;
+                                Method methods[] = cls.getMethods();
+                                for (Method method : methods) {
+                                    javax.ws.rs.Path methodPath = ReflectionUtils.getAnnotation(method, javax.ws.rs.Path.class);
+                                    if(methodPath != null){
+                                        String mp = ("/"+apiPath.value()+"/"+methodPath.value()).replace("//","/");
+                                        if(mp.endsWith("/")){
+                                            mp = mp.substring(0,mp.lastIndexOf("/"));
+                                        }
+                                        if(clsHasIgnoreAuth){
+                                            SwaggerReaderListener.ignoreMethod.add(mp);
+                                            continue;
+                                        }
+                                        boolean methodHasIgnoreAuth = ReflectionUtils.getAnnotation(method, IgnoreAuth.class) != null;
+                                        if(methodHasIgnoreAuth){
+                                            SwaggerReaderListener.ignoreMethod.add(mp);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        classes.add(SwaggerReaderListener.class);
+                    }
                     return classes;
                 }
             };
