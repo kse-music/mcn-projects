@@ -2,13 +2,16 @@ package com.hiekn.boot.autoconfigure.jersey;
 
 import io.swagger.jaxrs.Reader;
 import io.swagger.jaxrs.config.ReaderListener;
+import io.swagger.models.HttpMethod;
+import io.swagger.models.Operation;
 import io.swagger.models.Path;
 import io.swagger.models.Swagger;
 import io.swagger.models.parameters.HeaderParameter;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * global generate header parameter
@@ -18,7 +21,7 @@ import java.util.Set;
  */
 public class SwaggerReaderListener implements ReaderListener {
 
-    static final Set<String> ignoreMethod = new HashSet<>();
+    static final MultiValueMap<String,String> ignoreMethod = new LinkedMultiValueMap<>();
 
     @Override
     public void beforeScan(Reader reader, Swagger swagger) {
@@ -34,8 +37,12 @@ public class SwaggerReaderListener implements ReaderListener {
         Map<String, Path> paths = swagger.getPaths();
         if(paths != null){
             paths.forEach((k,v) -> {
-                if(!ignoreMethod.contains(k)){
-                    v.addParameter(headerParameter);
+                List<String> method = ignoreMethod.get(k);
+                Map<HttpMethod, Operation> operationMap = v.getOperationMap();
+                for (Map.Entry<HttpMethod, Operation> entry : operationMap.entrySet()) {
+                    if(method == null || !method.contains(entry.getKey().toString())){
+                        entry.getValue().addParameter(headerParameter);
+                    }
                 }
             });
         }

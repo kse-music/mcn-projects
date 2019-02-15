@@ -2,6 +2,7 @@ package com.hiekn.boot.autoconfigure.jersey;
 
 import com.hiekn.boot.autoconfigure.web.filter.JerseyXssFilter;
 import com.hiekn.boot.autoconfigure.web.rest.SwaggerView;
+import io.swagger.jaxrs.PATCH;
 import io.swagger.jaxrs.config.BeanConfig;
 import io.swagger.jaxrs.listing.ApiListingResource;
 import io.swagger.jaxrs.listing.SwaggerSerializers;
@@ -121,21 +122,28 @@ public class JerseySwaggerAutoConfiguration extends ResourceConfig {
                             javax.ws.rs.Path apiPath = ReflectionUtils.getAnnotation(cls, javax.ws.rs.Path.class);
                             if(apiPath != null){
                                 boolean clsHasIgnoreAuth = ReflectionUtils.getAnnotation(cls, IgnoreAuth.class) != null;
+                                String clsPath = apiPath.value();
+                                if(!clsPath.startsWith("/")){
+                                    clsPath = "/"+clsPath;
+                                }
+                                if(!clsPath.endsWith("/")){
+                                    clsPath += "/";
+                                }
                                 Method methods[] = cls.getMethods();
                                 for (Method method : methods) {
                                     javax.ws.rs.Path methodPath = ReflectionUtils.getAnnotation(method, javax.ws.rs.Path.class);
                                     if(methodPath != null){
-                                        String mp = ("/"+apiPath.value()+"/"+methodPath.value()).replace("//","/");
+                                        String mp = (clsPath+methodPath.value()).replace("//","/");
                                         if(mp.endsWith("/")){
                                             mp = mp.substring(0,mp.lastIndexOf("/"));
                                         }
                                         if(clsHasIgnoreAuth){
-                                            SwaggerReaderListener.ignoreMethod.add(mp);
+                                            SwaggerReaderListener.ignoreMethod.add(mp,extractMethod(method));
                                             continue;
                                         }
                                         boolean methodHasIgnoreAuth = ReflectionUtils.getAnnotation(method, IgnoreAuth.class) != null;
                                         if(methodHasIgnoreAuth){
-                                            SwaggerReaderListener.ignoreMethod.add(mp);
+                                            SwaggerReaderListener.ignoreMethod.add(mp,extractMethod(method));
                                         }
                                     }
                                 }
@@ -162,6 +170,25 @@ public class JerseySwaggerAutoConfiguration extends ResourceConfig {
                         .registerClasses(FreemarkerMvcFeature.class,SwaggerView.class);
             }
         }
+    }
+
+    private String extractMethod(Method method){
+        if (method.getAnnotation(javax.ws.rs.GET.class) != null) {
+            return "GET";
+        } else if (method.getAnnotation(javax.ws.rs.PUT.class) != null) {
+            return "PUT";
+        } else if (method.getAnnotation(javax.ws.rs.POST.class) != null) {
+            return "POST";
+        } else if (method.getAnnotation(javax.ws.rs.DELETE.class) != null) {
+            return "DELETE";
+        } else if (method.getAnnotation(javax.ws.rs.OPTIONS.class) != null) {
+            return "OPTIONS";
+        } else if (method.getAnnotation(javax.ws.rs.HEAD.class) != null) {
+            return "HEAD";
+        } else if (method.getAnnotation(PATCH.class) != null) {
+            return "PATCH";
+        }
+        return "";
     }
 
     @Bean
