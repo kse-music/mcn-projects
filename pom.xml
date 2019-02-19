@@ -5,7 +5,7 @@
     <groupId>com.hiekn.boot</groupId>
     <artifactId>mcn-projects</artifactId>
     <packaging>pom</packaging>
-    <version>1.5.19</version>
+    <version>1.5.18</version>
     <modules>
         <module>mcn-core</module>
         <module>mcn-spring-boot-starter</module>
@@ -18,12 +18,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.19.RELEASE</version>
+        <version>1.5.18.RELEASE</version>
         <relativePath/>
     </parent>
 
     <properties>
-        <mcn.version>1.5.19</mcn.version>
+        <mcn.version>1.5.18</mcn.version>
         <project.build.sourceEncoding>UTF8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
