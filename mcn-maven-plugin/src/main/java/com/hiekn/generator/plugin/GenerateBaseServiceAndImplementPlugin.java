@@ -86,11 +86,13 @@ public class GenerateBaseServiceAndImplementPlugin extends PluginAdapter {
                 TopLevelClass restClass = new TopLevelClass(new FullyQualifiedJavaType(restPkg+"."+shortName.replace("Mapper", "RestApi")));
                 restClass.setVisibility(JavaVisibility.PUBLIC);
                 restClass.addImportedType("org.springframework.stereotype.Controller");
+                restClass.addImportedType("javax.validation.constraints.NotNull");
                 restClass.addImportedType("javax.ws.rs.*");
                 restClass.addImportedType("javax.ws.rs.core.MediaType");
                 restClass.addImportedType("org.springframework.beans.factory.annotation.Autowired");
                 restClass.addImportedType("javax.ws.rs.core.MediaType");
-                restClass.addImportedType("io.swagger.annotations.*");
+                restClass.addImportedType("io.swagger.annotations.Api");
+                restClass.addImportedType("io.swagger.annotations.ApiOperation");
                 restClass.addImportedType("com.hiekn.boot.autoconfigure.base.model.result.RestData");
                 restClass.addImportedType("com.hiekn.boot.autoconfigure.base.model.result.RestResp");
                 restClass.addImportedType("com.hiekn.boot.autoconfigure.web.util.BeanValidator");
@@ -191,7 +193,7 @@ public class GenerateBaseServiceAndImplementPlugin extends PluginAdapter {
         add.setVisibility(JavaVisibility.PUBLIC);
         add.setReturnType(new FullyQualifiedJavaType("RestResp<"
                 + introspectedTable.getFullyQualifiedTable().getDomainObjectName() + ">"));
-        parameter = new Parameter(new FullyQualifiedJavaType("@ApiParam(required = true)@FormParam(\"bean\") String"),"bean");
+        parameter = new Parameter(new FullyQualifiedJavaType("@NotNull @FormParam(\"bean\") String"),"bean");
         add.getParameters().add(parameter);
 
         add.getBodyLines().add(Bean+" "+bean+" = JsonUtils.fromJson(bean, "+Bean+".class);");
@@ -220,7 +222,7 @@ public class GenerateBaseServiceAndImplementPlugin extends PluginAdapter {
         update.setReturnType(new FullyQualifiedJavaType("RestResp"));
         parameter = new Parameter(new FullyQualifiedJavaType("@PathParam(\"id\") "+pk+""),"id");
         update.getParameters().add(parameter);
-        parameter = new Parameter(new FullyQualifiedJavaType("@ApiParam(required = true)@FormParam(\"bean\") String"),"bean");
+        parameter = new Parameter(new FullyQualifiedJavaType("@NotNull @FormParam(\"bean\") String"),"bean");
         update.getParameters().add(parameter);
         update.getBodyLines().add(Bean+" "+bean+" = JsonUtils.fromJson(bean, "+Bean+".class);");
         update.getBodyLines().add(bean+".setId(id);");
