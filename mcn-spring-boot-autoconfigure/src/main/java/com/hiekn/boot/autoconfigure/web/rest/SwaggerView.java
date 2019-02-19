@@ -12,6 +12,7 @@ import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +51,11 @@ public class SwaggerView {
         if(f.exists()){
             f.delete();
         }
-        McnUtils.copyFile(fileIn,prop.getProperty("licPath"));
+        try {
+            McnUtils.copyFile(fileIn,prop.getProperty("licPath"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return new RestResp<>();
     }
 

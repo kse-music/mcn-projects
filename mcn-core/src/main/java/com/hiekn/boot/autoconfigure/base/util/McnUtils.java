@@ -1,7 +1,5 @@
 package com.hiekn.boot.autoconfigure.base.util;
 
-import com.hiekn.boot.autoconfigure.base.exception.BaseException;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -167,12 +165,8 @@ public abstract class McnUtils {
      * @param filePath
      * @return
      */
-    public static List<String> readAllLine(String filePath) {
-        try {
-            return Files.readAllLines(buildPath(filePath));
-        } catch (IOException e) {
-           throw new BaseException(e);
-        }
+    public static List<String> readAllLine(String filePath) throws IOException {
+        return Files.readAllLines(buildPath(filePath));
     }
 
     /**
@@ -180,7 +174,7 @@ public abstract class McnUtils {
      * @param path
      * @return
      */
-    public static String readLine(String path){
+    public static String readLine(String path) throws IOException {
         return readAllLine(path).get(0);
     }
 
@@ -189,12 +183,8 @@ public abstract class McnUtils {
      * @param filePath 文件路径
      * @return
      */
-    public static byte[] readAllBytes(String filePath) {
-        try {
-            return Files.readAllBytes(buildPath(filePath));
-        } catch (IOException e) {
-            throw new BaseException(e);
-        }
+    public static byte[] readAllBytes(String filePath) throws IOException {
+        return Files.readAllBytes(buildPath(filePath));
     }
 
     /**
@@ -203,12 +193,9 @@ public abstract class McnUtils {
      * @param target 目标文件
      * @return
      */
-    public static long copyFile(String source,String target) {
-        try {
-            return Files.copy(buildPath(source),Files.newOutputStream(buildPath(target)));
-        } catch (IOException e) {
-            throw new BaseException(e);
-        }
+    public static long copyFile(String source,String target) throws IOException {
+        checkTarget(target);
+        return Files.copy(buildPath(source),Files.newOutputStream(buildPath(target)));
     }
 
     /**
@@ -217,20 +204,24 @@ public abstract class McnUtils {
      * @param target 目标文件
      * @return
      */
-    public static long copyFile(File source,File target) {
+    public static long copyFile(File source,File target) throws IOException {
         return copyFile(source.getAbsolutePath(),target.getAbsolutePath());
     }
 
-    public static long copyFile(InputStream in,String target) {
-        try {
-            return Files.copy(in,buildPath(target));
-        } catch (IOException e) {
-            throw new BaseException(e);
-        }
+    public static long copyFile(InputStream in,String target) throws IOException {
+        checkTarget(target);
+        return Files.copy(in,buildPath(target));
     }
 
-    public static long copyFile(InputStream in,File target) {
+    public static long copyFile(InputStream in,File target) throws IOException {
         return copyFile(in,target.getAbsolutePath());
+    }
+
+    private static void checkTarget(String target){
+        File d = new File(target).getParentFile();
+        if(!d.exists()){
+            d.mkdirs();
+        }
     }
 
     private static Path buildPath(String filePath){
