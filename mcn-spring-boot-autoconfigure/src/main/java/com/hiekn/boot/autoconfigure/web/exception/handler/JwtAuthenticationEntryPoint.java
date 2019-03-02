@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public final class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     private ObjectMapper mapper;
 

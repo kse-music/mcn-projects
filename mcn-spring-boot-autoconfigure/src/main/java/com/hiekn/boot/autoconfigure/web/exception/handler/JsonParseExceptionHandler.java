@@ -14,7 +14,7 @@ import javax.ws.rs.ext.Provider;
  * @date 2019/1/3 14:41
  */
 @Provider
-public class JsonParseExceptionHandler extends AbstractExceptionHandler implements ExceptionMapper<JsonParseException> {
+public final class JsonParseExceptionHandler extends AbstractExceptionHandler implements ExceptionMapper<JsonParseException> {
 
     @Override
     public Response toResponse(JsonParseException exception) {
