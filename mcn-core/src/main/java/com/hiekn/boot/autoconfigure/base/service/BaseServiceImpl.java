@@ -12,6 +12,11 @@ public class BaseServiceImpl<T,PK> implements BaseService<T,PK> {
     private BaseMapper<T,PK> baseMapper;
 
     @Override
+    public void assertSelfData(PK id) {
+
+    }
+
+    @Override
     public T save(T pojo) {
         baseMapper.insert(pojo);
         return pojo;

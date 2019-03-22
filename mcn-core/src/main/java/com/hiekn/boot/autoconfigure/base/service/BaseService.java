@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface BaseService<T,PK> {
 
+    void assertSelfData(PK id);
     T save(T pojo);
     T saveSelective(T pojo);
     void deleteByPrimaryKey(PK id);
